@@ -114,7 +114,7 @@
 
 			async function subscribeUser() {
 				if ('serviceWorker' in navigator) {
-					if (window.confirm("Do you want to open in new tab?")) {
+					if (window.confirm("Do you want subscribe to push notifications")) {
 						const register = await navigator.serviceWorker.register('/ClueGames/sw.js');
 
 						const subscription = await register.pushManager.subscribe({
