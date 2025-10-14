@@ -20,6 +20,6 @@ self.addEventListener('notificationclick', event => {
     event.notification.close();
     event.waitUntil(
         // Opens site
-        clients.openWindow('/')
+        clients.openWindow('/ClueGames/')
     );
 });
