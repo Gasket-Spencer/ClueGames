@@ -39,12 +39,61 @@
 			image-rendering: pixelated;
 			-ms-interpolation-mode: nearest-neighbor;
 		}
+
+		#confirm-popup {
+			position: fixed;
+			top: 0; left: 0;
+			width: 100vw; height: 100vh;
+			background: rgba(0, 0, 0, 0.5);
+			display: none;
+			align-items: center;
+			justify-content: center;
+			z-index: 9999;
+		}
+
+		#confirm-popup .box {
+			background: darkgrey;
+			color: white;
+			font-family: 'Poppins', sans-serif; 
+			padding: 20px;
+			border-radius: 5px;
+			text-align: center;
+			box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+			max-width: 320px;
+		}
+
+		#confirm-popup button {
+			margin: 8px;
+			padding: 8px 14px;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+		}
+
+		#confirm-popup .yes {
+			background: #4CAF50;
+			color: white;
+		}
+
+		#confirm-popup .no {
+			background: #f44336;
+			color: white;
+		}
 	</style>
 </head>
 
 <body>
 	<div id="gameContainer">
-		<button onclick="OnClick()">Test</button>
+
+		
+		<div id="confirm-popup">
+			<div class="box">
+				<p>Do you want to subscribe to push notifications?</p>
+				<button class="yes">Yes</button>
+				<button class="no">No</button>
+			</div>
+		</div>
+
 		<canvas id="unity-canvas" width="720" height="1604" data-pixel-art=""></canvas>
 		<script src="Build/ClueGameBuilds.loader.js"></script>
 		<script>
@@ -65,11 +114,13 @@
 			} catch (e) {
 				scaleToFit = true;
 			}
+
 			function progressHandler(progress) {
 				var percent = progress * 100 + '%';
 				canvas.style.background = 'linear-gradient(to right, white, white ' + percent + ', transparent ' + percent + ', transparent) no-repeat center';
 				canvas.style.backgroundSize = '100% 1rem';
 			}
+
 			function onResize() {
 				var container = canvas.parentElement;
 				var w;
@@ -103,18 +154,47 @@
 			window.addEventListener('resize', onResize);
 			onResize();
 
-			subscribeUser();
+			if (typeof(Storage) !== "undefined") 
+			{
+				const test = localStorage.getItem("newUser");
+				console.log(test);
+				if(test === true || test == null){
+					subscribeUser();
+				}
+			}
+
+			function showConfirmPopup(message) {
+				return new Promise(resolve => {
+					const popup = document.getElementById("confirm-popup");
+					popup.querySelector("p").textContent = message;
+					popup.style.display = "flex";
+
+					const yesBtn = popup.querySelector(".yes");
+					const noBtn = popup.querySelector(".no");
+
+					const cleanup = (response) => {
+						popup.style.display = "none";
+						yesBtn.onclick = noBtn.onclick = null;
+						resolve(response);
+					};
+
+					yesBtn.onclick = () => cleanup(true);
+					noBtn.onclick = () => cleanup(false);
+				});
+			}
 
 			function OnClick() {
 				console.log("Click");
 				subscribeUser();
+				localStorage.setItem("newUser", true);
 			}
 
 			const publicVapidKey = "BBuNo3PX4UUwtPujTBZskCRBVvy9UsHI2Q93hXfW1cGauKZJw4NvGIZVwbqgpUlzoshBKeYuea3nnxjSIDhhVV8";
 
 			async function subscribeUser() {
 				if ('serviceWorker' in navigator) {
-					if (window.confirm("Do you want subscribe to push notifications")) {
+					const confirmed = await showConfirmPopup("Do you want to subscribe to push notifications?");
+					if (confirmed) {
 						const register = await navigator.serviceWorker.register('/ClueGames/sw.js');
 
 						const subscription = await register.pushManager.subscribe({
@@ -129,6 +209,10 @@
 						});
 
 						alert('Subscribed for notifications!');
+					}
+					if (typeof(Storage) !== "undefined") 
+					{
+						localStorage.setItem("newUser", false);
 					}
 				}
 			}
