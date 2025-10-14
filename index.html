@@ -169,17 +169,17 @@
 					popup.querySelector("p").textContent = message;
 					popup.style.display = "flex";
 
-					const yesBtn = popup.querySelector(".yes");
-					const noBtn = popup.querySelector(".no");
+					const yesButton = popup.querySelector(".yes");
+					const noButton = popup.querySelector(".no");
 
 					const cleanup = (response) => {
 						popup.style.display = "none";
-						yesBtn.onclick = noBtn.onclick = null;
+						yesButton.onclick = noButton.onclick = null;
 						resolve(response);
 					};
 
-					yesBtn.onclick = () => cleanup(true);
-					noBtn.onclick = () => cleanup(false);
+					yesButton.onclick = () => cleanup(true);
+					noButton.onclick = () => cleanup(false);
 				});
 			}
 
@@ -195,6 +195,12 @@
 				if ('serviceWorker' in navigator) {
 					const confirmed = await showConfirmPopup("Do you want to subscribe to push notifications?");
 					if (confirmed) {
+						const permission = await Notification.requestPermission();
+						if (permission !== 'granted') {
+							showAlert('Notifications permission was denied.');
+							return;
+						}
+
 						const register = await navigator.serviceWorker.register('/ClueGames/sw.js');
 
 						const subscription = await register.pushManager.subscribe({
