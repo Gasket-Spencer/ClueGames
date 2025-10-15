@@ -183,7 +183,8 @@
 						} else {
 							alert('Notification permission denied.');
 						}
-						cleanup(true)
+						
+						popup.style.display = "none";
 					});
 					const noButton = popup.querySelector(".no");
 
