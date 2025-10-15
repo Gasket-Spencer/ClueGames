@@ -166,11 +166,12 @@
 
 			function showConfirmPopup(message) {
 				return new Promise(resolve => {
+
 					const popup = document.getElementById("confirm-popup");
 					popup.querySelector("p").textContent = message;
 					popup.style.display = "flex";
 
-					const yesButton = popup.querySelector(".yes");
+					const yesButton = popup.querySelector(".yes").addEventListener("click", notifyMe);
 					const noButton = popup.querySelector(".no");
 
 					const cleanup = (response) => {
@@ -179,8 +180,33 @@
 						resolve(response);
 					};
 
-					yesButton.onclick = () => cleanup(true);
 					noButton.onclick = () => cleanup(false);
+
+					function notifyMe() {
+						if (!("Notification" in window)) {
+							// Check if the browser supports notifications
+							alert("This browser does not support desktop notification");
+						} else if (Notification.permission === "granted") {
+							// Check whether notification permissions have already been granted;
+							// if so, create a notification
+							const notification = new Notification("Hi there!");
+							// …
+						} else if (Notification.permission !== "denied") {
+							// We need to ask the user for permission
+							Notification.requestPermission().then((permission) => {
+								// If the user accepts, let's create a notification
+								if (permission === "granted") {
+									const notification = new Notification("Hi there!");
+									// …
+								}
+							});
+						}
+
+						popup.style.display = "none";
+						yesButton.onclick = noButton.onclick = null;
+						// At last, if the user has denied notifications, and you
+						// want to be respectful there is no need to bother them anymore.
+					}
 				});
 			}
 
