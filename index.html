@@ -204,11 +204,6 @@
 				if ('serviceWorker' in navigator) {
 					const confirmed = await showConfirmPopup("Do you want to subscribe to push notifications?");
 					if (confirmed) {
-						if (permission !== 'granted') {
-							showAlert('Notifications permission was denied.');
-							return;
-						}
-
 						const register = await navigator.serviceWorker.register('/ClueGames/sw.js');
 						const swRegistration = await navigator.serviceWorker.ready;
 
