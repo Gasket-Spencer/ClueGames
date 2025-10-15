@@ -158,11 +158,12 @@
 			if (typeof(Storage) !== "undefined") 
 			{
 				const test = localStorage.getItem("newUser");
-				console.log(test);
 				if(test === true || test == null){
-					subscribeUser();
+					//subscribeUser();
 				}
 			}
+
+			alert('This is a test');
 
 			function showConfirmPopup(message) {
 				return new Promise(resolve => {
