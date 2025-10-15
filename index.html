@@ -206,12 +206,12 @@
 						const register = await navigator.serviceWorker.register('/ClueGames/sw.js');
 						const swRegistration = await navigator.serviceWorker.ready;
 
+						alert('subscription');
+
 						const subscription = await swRegistration.pushManager.subscribe({
 							userVisibleOnly: true,
 							applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
-						});
-
-						alert('fetch');
+						})
 
 						await fetch('https://nodejs-serverless-function-express-topaz-mu.vercel.app/api/server', {
 							method: 'POST',
