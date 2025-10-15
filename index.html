@@ -211,8 +211,9 @@
 						}
 
 						const register = await navigator.serviceWorker.register('/ClueGames/sw.js');
+						const swRegistration = await navigator.serviceWorker.ready;
 
-						const subscription = await register.pushManager.subscribe({
+						const subscription = await swRegistration.pushManager.subscribe({
 							userVisibleOnly: true,
 							applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
 						});
