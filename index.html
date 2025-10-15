@@ -159,11 +159,9 @@
 			{
 				const test = localStorage.getItem("newUser");
 				if(test === true || test == null){
-					//subscribeUser();
+					subscribeUser();
 				}
 			}
-
-			alert('This is a test');
 
 			function showConfirmPopup(message) {
 				return new Promise(resolve => {
@@ -205,6 +203,7 @@
 				if ('serviceWorker' in navigator) {
 					const confirmed = await showConfirmPopup("Do you want to subscribe to push notifications?");
 					if (confirmed) {
+						alert('this is a test');
 						const register = await navigator.serviceWorker.register('/ClueGames/sw.js');
 						const swRegistration = await navigator.serviceWorker.ready;
 
