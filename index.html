@@ -203,9 +203,9 @@
 				if ('serviceWorker' in navigator) {
 					const confirmed = await showConfirmPopup("Do you want to subscribe to push notifications?");
 					if (confirmed) {
-						alert('this is a test');
 						const register = await navigator.serviceWorker.register('/ClueGames/sw.js');
 						const swRegistration = await navigator.serviceWorker.ready;
+						alert('service worker ready');
 
 						const subscription = await swRegistration.pushManager.subscribe({
 							userVisibleOnly: true,
