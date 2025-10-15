@@ -170,6 +170,12 @@
 					popup.querySelector("p").textContent = message;
 					popup.style.display = "flex";
 
+					const cleanup = (response) => {
+						popup.style.display = "none";
+						yesButton.onclick = noButton.onclick = null;
+						resolve(response);
+					};
+
 					const yesButton = popup.querySelector(".yes").addEventListener('click', async () => {
 						const permission = await Notification.requestPermission();
 						if (permission === 'granted') {
@@ -178,17 +184,12 @@
 						} else {
 							alert('Notification permission denied.');
 						}
+						cleanup(true)
 					});
 					const noButton = popup.querySelector(".no");
 
-					// const cleanup = (response) => {
-					// 	popup.style.display = "none";
-					// 	yesButton.onclick = noButton.onclick = null;
-					// 	resolve(response);
-					// };
-
 					// yesButton.onclick = () => cleanup(true);
-					// noButton.onclick = () => cleanup(false);
+					noButton.onclick = () => cleanup(false);
 				});
 			}
 
