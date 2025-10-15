@@ -178,14 +178,12 @@
 					const yesButton = popup.querySelector(".yes").addEventListener('click', async () => {
 						const permission = await Notification.requestPermission();
 						if (permission === 'granted') {
-							await subscribeUser();
-							document.getElementById('enablePush').style.display = 'none';
+							resolve(true)
 						} else {
-							alert('Notification permission denied.');
+							resolve(false)
 						}
 						
 						popup.style.display = "none";
-						resolve(true)
 					});
 					const noButton = popup.querySelector(".no");
 
