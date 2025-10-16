@@ -165,12 +165,17 @@
 			}
 
 			const registerServiceWorker = async () => {
-				const swRegistration = await navigator.serviceWorker.register('/ClueGames/sw.js');
+				const registration = await navigator.serviceWorker.register('/ClueGames/sw.js');
+
+				alert("waiting for sw")
+				const swRegistration = await navigator.serviceWorker.ready;
+				alert("waiting for sw ready")
 				return swRegistration;
 			}
 
 
 			const main = async () => {
+				alert("main");
 				check();
 				Notification.requestPermission().then(async function() {
 					await registerServiceWorker()

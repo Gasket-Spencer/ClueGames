@@ -1,28 +1,28 @@
-self.addEventListener('push', event => {
-    console.log('Push received:', event);
+// self.addEventListener('push', event => {
+//     console.log('Push received:', event);
 
-    let data = {};
-    if (event.data) {
-        data = event.data.json();
-    }
+//     let data = {};
+//     if (event.data) {
+//         data = event.data.json();
+//     }
 
-    const title = data.title || "New Notification";
-    const options = {
-        body: data.body || "Test notification",
-    };
+//     const title = data.title || "New Notification";
+//     const options = {
+//         body: data.body || "Test notification",
+//     };
 
-    event.waitUntil(
-        self.registration.showNotification(title, options)
-    );
-});
+//     event.waitUntil(
+//         self.registration.showNotification(title, options)
+//     );
+// });
 
-self.addEventListener('notificationclick', event => {
-    event.notification.close();
-    event.waitUntil(
-        // Opens site
-        clients.openWindow('/ClueGames/')
-    );
-});
+// self.addEventListener('notificationclick', event => {
+//     event.notification.close();
+//     event.waitUntil(
+//         // Opens site
+//         clients.openWindow('/ClueGames/')
+//     );
+// });
 
 // urlB64ToUint8Array is a magic function that will encode the base64 public key
 // to Array buffer which is needed by the subscription option
@@ -36,6 +36,7 @@ const urlB64ToUint8Array = base64String => {
   }
   return outputArray
 }
+
 // saveSubscription saves the subscription to the backend
 const saveSubscription = async subscription => {
     console.log("saving");
