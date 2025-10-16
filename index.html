@@ -205,7 +205,7 @@
 					return;
 				}
 
-				if ('serviceWorker' in navigator || !('PushManager' in window)) {
+				if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
 					alert('Push notifications not supported');
 					return;
 				}
