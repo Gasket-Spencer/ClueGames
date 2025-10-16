@@ -200,6 +200,10 @@
 			const publicVapidKey = "BBuNo3PX4UUwtPujTBZskCRBVvy9UsHI2Q93hXfW1cGauKZJw4NvGIZVwbqgpUlzoshBKeYuea3nnxjSIDhhVV8";
 
 			async function subscribeUser() {
+				const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
+				|| window.navigator.standalone 
+				|| document.referrer.includes('android-app://');
+
 				if (!isStandalone) {
 					alert('Not running as PWA - push notifications require home screen installation');
 					return;
