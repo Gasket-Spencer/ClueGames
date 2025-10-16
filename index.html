@@ -165,7 +165,7 @@
 			}
 
 			const registerServiceWorker = async () => {
-				const registration = await navigator.serviceWorker.register('/sw.js');
+				const registration = await navigator.serviceWorker.register('/ClueGames/sw.js');
 
 				alert("waiting for sw")
 				const swRegistration = await navigator.serviceWorker.ready;
@@ -247,7 +247,7 @@
 
 				const confirmed = await showConfirmPopup("Do you want to subscribe to push notifications?");
 				if (confirmed) {
-					const register = await navigator.serviceWorker.register('/sw.js');
+					const register = await navigator.serviceWorker.register('/ClueGames/sw.js');
 
 					alert('starting subscription');
 
