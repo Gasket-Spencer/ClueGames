@@ -42,21 +42,20 @@ const saveSubscription = async subscription => {
     console.log("saving");
   const SERVER_URL = 'https://nodejs-serverless-function-express-topaz-mu.vercel.app/api/server'
   const response = await fetch(SERVER_URL, {
-    method: 'post',
+    method: 'POST',
+    body: JSON.stringify(subscription),
     headers: {
       'Content-Type': 'application/json',
-      'Bypass-Tunnel-Reminder': 'shit',
     },
-    body: JSON.stringify(subscription),
   })
-
-
 
   console.log(response);
 
   return response.json()
 }
 self.addEventListener('activate', async () => {
+    console.log("activate");  
+
   // This will be called only once when the service worker is activated.
   try {
     const applicationServerKey = urlB64ToUint8Array(
