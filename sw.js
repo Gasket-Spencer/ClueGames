@@ -42,12 +42,14 @@ const saveSubscription = async subscription => {
     console.log("saving");
   const SERVER_URL = 'https://nodejs-serverless-function-express-topaz-mu.vercel.app/api/server'
   const response = await fetch(SERVER_URL, {
-    method: 'POST',
-    body: JSON.stringify(subscription),
+    method: 'post',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify(subscription),
   })
+
+
 
   console.log(response);
 
