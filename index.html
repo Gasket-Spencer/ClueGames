@@ -204,11 +204,6 @@
 				|| window.navigator.standalone 
 				|| document.referrer.includes('android-app://');
 
-				if (!isStandalone) {
-					alert('Not running as PWA - push notifications require home screen installation');
-					return;
-				}
-
 				if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
 					alert('Push notifications not supported');
 					return;
@@ -228,6 +223,8 @@
 						userVisibleOnly: true,
 						applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
 					})
+
+					alert('push subscription');
 
 					if (response.ok) {
 						alert('Subscribed for notifications!');
