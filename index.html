@@ -155,11 +155,41 @@
 			window.addEventListener('resize', onResize);
 			onResize();
 
+			const check = () => {
+				if (!('serviceWorker' in navigator)) {
+					throw new Error('No Service Worker support!')
+				}
+				if (!('PushManager' in window)) {
+					throw new Error('No Push API Support!')
+				}
+			}
+
+			const registerServiceWorker = async () => {
+				const swRegistration = await navigator.serviceWorker.register('/ClueGames/sw.js');
+				return swRegistration;
+			}
+
+
+			const main = async () => {
+				check();
+				Notification.requestPermission().then(async function() {
+					await registerServiceWorker()
+				});
+			}
+
+			const showLocalNotification = (title, body, swRegistration) => {
+				const options = {
+					body,
+				};
+				swRegistration.showNotification(title, options);
+			}
+
 			if (typeof(Storage) !== "undefined") 
 			{
 				const test = localStorage.getItem("newUser");
 				if(test === true || test == null){
-					subscribeUser();
+					//subscribeUser();
+					showConfirmPopup("Do you want to subscribe to push notifications?")
 				}
 			}
 
@@ -177,6 +207,7 @@
 					const yesButton = popup.querySelector(".yes").addEventListener('click', async () => {
 						const permission = await Notification.requestPermission();
 						if (permission === 'granted') {
+							main();
 							resolve(true)
 						} else {
 							resolve(false)
