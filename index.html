@@ -249,11 +249,11 @@
 
 					alert('push subscription');
 
-					if (response.ok) {
-						alert('Subscribed for notifications!');
-					} else {
-						alert('Failed to save subscription: ' + response.status);
-					}
+					// if (response.ok) {
+					// 	alert('Subscribed for notifications!');
+					// } else {
+					// 	alert('Failed to save subscription: ' + response.status);
+					// }
 
 					await fetch('https://nodejs-serverless-function-express-topaz-mu.vercel.app/api/server', {
 						method: 'POST',
