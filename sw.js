@@ -1,89 +1,25 @@
-// self.addEventListener('push', event => {
-//     console.log('Push received:', event);
+self.addEventListener('push', event => {
+    console.log('Push received:', event);
 
-//     let data = {};
-//     if (event.data) {
-//         data = event.data.json();
-//     }
+    let data = {};
+    if (event.data) {
+        data = event.data.json();
+    }
 
-//     const title = data.title || "New Notification";
-//     const options = {
-//         body: data.body || "Test notification",
-//     };
+    const title = data.title || "New Notification";
+    const options = {
+        body: data.body || "Test notification",
+    };
 
-//     event.waitUntil(
-//         self.registration.showNotification(title, options)
-//     );
-// });
-
-// self.addEventListener('notificationclick', event => {
-//     event.notification.close();
-//     event.waitUntil(
-//         // Opens site
-//         clients.openWindow('/ClueGames/')
-//     );
-// });
-
-// urlB64ToUint8Array is a magic function that will encode the base64 public key
-// to Array buffer which is needed by the subscription option
-const urlB64ToUint8Array = base64String => {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
-  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
-  const rawData = atob(base64)
-  const outputArray = new Uint8Array(rawData.length)
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i)
-  }
-  return outputArray
-}
-
-// saveSubscription saves the subscription to the backend
-const saveSubscription = async subscription => {
-    console.log("saving");
-  const SERVER_URL = 'https://nodejs-serverless-function-express-topaz-mu.vercel.app/api/server'
-  const response = await fetch(SERVER_URL, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(subscription),
-  })
-
-
-
-  console.log(response);
-
-  return response.json()
-}
-self.addEventListener('activate', async () => {
-    console.log("activate");  
-
-  // This will be called only once when the service worker is activated.
-  try {
-    const applicationServerKey = urlB64ToUint8Array(
-      'BBuNo3PX4UUwtPujTBZskCRBVvy9UsHI2Q93hXfW1cGauKZJw4NvGIZVwbqgpUlzoshBKeYuea3nnxjSIDhhVV8'
-    )
-    const options = { applicationServerKey, userVisibleOnly: true }
-    const subscription = await self.registration.pushManager.subscribe(options)
-    const response = await saveSubscription(subscription)
-    console.log(response)
-  } catch (err) {
-    console.log('Error', err)
-  }
-})
-
-self.addEventListener("push", function(event) {
-  if (event.data) {
-    console.log("Push event!!! ", event.data.text());
-    showLocalNotification("Yolo", event.data.text(),  self.registration);
-  } else {
-    console.log("Push event but no data");
-  }
+    event.waitUntil(
+        self.registration.showNotification(title, options)
+    );
 });
-const showLocalNotification = (title, body, swRegistration) => {
-  const options = {
-    body
-    // here you can add more properties like icon, image, vibrate, etc.
-  };
-  swRegistration.showNotification(title, options);
-};
+
+self.addEventListener('notificationclick', event => {
+    event.notification.close();
+    event.waitUntil(
+        // Opens site
+        clients.openWindow('/ClueGames/')
+    );
+});
